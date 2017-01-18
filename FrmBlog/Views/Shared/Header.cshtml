@@ -1,0 +1,115 @@
+﻿@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;
+<div id="header"> 
+		<div id="header-inner"> 
+			<div class="container"> 
+            <div style="float:left">
+				<a href="/">               
+ <img src="../../Content/images/logo.png" alt="mayestro.net" id="logo"/>                                                       
+				</a> 
+				</div>
+
+<div style="float:right;">
+
+<div id="logindisplay">
+@Html.Partial("_LogOnPartial")
+</div>	
+</div>
+</div> <!-- end .container --> 
+</div> <!-- end #header-inner --> 
+</div> <!-- end #header --> 
+ <div id="search-bar">	
+ <div id="searchinput_wraper">			
+<input type="text" value="Ara..." name="s" id="searchinput" onkeyup="Ara(event)" onblur="if(this.value=='') this.value='Ara...';" onfocus="if(this.value=='Ara...') this.value='';" />  
+				</div>
+			</div> <!-- end #search-bar --> 		
+<div class="cbt"></div>
+    <div id="tnav-wrapper">
+            <div class="tnav">
+           
+<ul>
+<li id="nav_li_soru" class="selected_li">
+<a id="nav-questions" href="/">Sorular</a>
+</li>
+<li>
+<a  href="/">En Çok Ziyaret Edilenler</a>
+</li>
+<li>
+<a  href="/">Cevapsızlar</a>
+</li>
+<li id="nav_li_etiket">
+@(Html.ActionLink<EtiketController>(x => x.Etiketler(null, ""), "Etiketler"))
+</li>
+@*<li>
+@Html.ActionLink("Tag", "Index", "Tag", new { area="YonetimPaneli"},null)
+</li>*@
+</ul>
+</div>
+ <div class="askquestion">
+<ul>
+<li>
+<a id="nav-askquestion" href="/soru/sor">Soru Sor</a>
+</li>
+</ul>
+</div>
+ </div> 
+
+ <div class="cbt"></div>
+ <script language="javascript" type="text/javascript">
+     function IsNumeric(sText) {
+         if (sText == "")
+             return false;
+         var ValidChars = "0123456789.";
+         var IsNumber = true;
+         var Char;
+         for (i = 0; i < sText.length && IsNumber == true; i++) {
+             Char = sText.charAt(i);
+             if (ValidChars.indexOf(Char) == -1) {
+                 IsNumber = false;
+             }
+         }
+         return IsNumber;
+     }
+     function Ara(e) {
+         var unicode = e.keyCode ? e.keyCode : e.charCode;
+         var sea = document.getElementById('searchinput').value;
+         if (unicode == 13 && sea != "" && sea != "ara...") {
+
+             var controller = '@ViewContext.RouteData.Values["controller"]';
+             var action = '@ViewContext.RouteData.Values["action"]';
+
+             if (controller != 'Ara') {
+
+                 //var url2 = '
+
+                 var url2 = '@Url.Action("Index","Ara")';
+                 var querystring2 = "";
+                 if (sea != "") {
+                     querystring2 = "?q=" + sea;
+                 }               
+                 document.location.href = url2 + querystring2;
+             }
+             else {
+                 var url = document.location.href.split('?')[0];
+                 var str = "";
+                 str = url.substring(url.lastIndexOf('/') + 1, url.length);
+                 if (IsNumeric(str)) {
+                     url = url.substring(0, url.lastIndexOf('/'));
+                 }
+                 var querystring = "";
+                 var first = false;
+                 if (sea != "") {
+                     first = true;
+                     querystring += "q=" + sea;
+                 }
+
+                 if (querystring != "")
+                     document.location.href = url + '?' + querystring;
+                 else
+                     document.location.href = url;
+             }
+         }
+     }
+ </script>	
+
+    

@@ -1,0 +1,343 @@
+﻿/* Css Sifirlama */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {margin: 0; padding: 0; border: 0; outline: 0; font-size: 100%; text-decoration:none;}
+body { padding: 0; margin: 0; font-family: Verdana; font-size: 11px; }
+h1  { padding: 10px; margin: 0; color: #c0c0c0; }
+a, a:visited { color: blue }
+
+#header { height: 40px; background-color: #f0f0f0; border-bottom: solid 5px #c0c0c0; }
+#container { width: 100%; height: 100%; position: absolute;	min-width: 1070px;}
+#footer { padding: 0; text-align: center; color: #000; }
+#main { clear: left; padding:10px; background-color: #e0e0e0;}
+
+.grid { border: solid 1px silver; background-color: #fff;width:990px;clear:both;margin-top:10px;}
+.grid th { background-color: #f0f0f0; color: #000; border: solid 1px silver; }
+.grid td { border: dotted 1px silver; background-color: #e0e0e0; }
+
+/* Form */
+form fieldset { border: 1; padding: 10px; margin: 10px;border:solid 1px gray; }
+form label { display: inline-block; width: 100px; }
+form label.error { font-family:arial; float: none; color: red; padding-left: .5em; vertical-align: top; width: auto; }
+form fieldset ol { margin: 0; padding: 0; }
+form fieldset li { list-style: none; margin: 0; line-height:1em;}
+
+.tabs { float: left; width: 100%; background: #FFFFFF; font-size: 93%; line-height: normal; margin: 0; padding: 0;  border-bottom:solid 1px #B8C1CA; }
+.tabs ul { margin: 0; padding: 10px 10px 0 50px; list-style: none; position: relative; top: 0px; }
+.tabs li { display: inline; margin: 0; padding: 1; }
+.tabs a { float: left; background: url( "images/tableftB.gif" ) no-repeat left top; margin: 0; padding: 0 0 0 4px; text-decoration: none;  }
+.tabs a span { float: left; display: block; background: url( "images/tabrightB.gif" ) no-repeat right top; padding: 5px 15px 4px 6px; color: #666; }
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+.tabs .current a span { float: none; }
+/* End IE5-Mac hack */
+.tabs .current a { background-position: 0% -42px; top: 1px; position: relative; }
+.tabs .current a span { background-position: 100% -42px;}
+
+.upload { width:300px; COLOR: #0000c0; }
+.error { color: red; }
+.success { color: green; }
+.heading { font-size: 16px; font-weight: bolder; color: #000; clear: both; margin-bottom: 5px; border-bottom: solid 1px #999; }
+
+/*---------admin2-----------*/
+
+a.pink {
+color: #D8325D;
+font-weight:bold;
+text-decoration:underline;
+}
+a.pink:hover {
+text-decoration:none;
+}
+table{width:100%;}
+th{background:#fff;color:#D8325D; padding:10px;}
+td{padding:5px;}
+tr.even td{background: #EAEAEA;}
+tr.odd td{background: #FDFDFD;}
+#admin_header{
+width:990px;
+height:40px;
+padding-top:20px;
+}
+#admin_header_border{
+width:990px;
+height:12px;
+background:url(images/border_style.gif) repeat-x center;
+}
+/*---------------admin titles-----------------------*/
+.admin_index_title{
+float:left;
+width: auto;
+height: auto;
+background:url(images/adminicons/settings.png) no-repeat left;
+padding:5px 5px 5px 35px;
+font-size:14px;
+font-weight:bold;
+color:#445865;
+margin:10px;
+}
+.admin_addoffer_title{
+float:left;
+width: auto;
+height: auto;
+background:url(images/adminicons/addoffer.png) no-repeat left;
+padding:5px 5px 5px 35px;
+font-size:14px;
+font-weight:bold;
+color:#445865;
+margin:10px;
+}
+.admin_editoffer_title{
+float:left;
+width: auto;
+height: auto;
+background:url(images/adminicons/edit.png) no-repeat left;
+padding:5px 5px 5px 35px;
+font-size:14px;
+font-weight:bold;
+color:#445865;
+margin:10px;
+}
+.admin_details_title{
+float:left;
+width: auto;
+height: auto;
+background:url(images/adminicons/details.png) no-repeat left;
+padding:5px 5px 5px 35px;
+font-size:14px;
+font-weight:bold;
+color:#445865;
+margin:10px;
+}
+.adminform_row_contact{
+float:left;
+width:372px;
+text-align:center;
+padding:3px 0 3px 0;
+}
+label.adminleft{
+float:left;
+width:95px;
+padding-top:3px;
+text-align:right;
+}
+label.adminright{
+float:left;
+width:200px;
+padding-top:3px;
+padding-left:5px;
+text-align: left;
+color:#006699;
+}
+.add_tab{
+width: 950px;
+height: auto;
+float:left;
+background-color:#f3f5f6;
+padding:10px;
+margin: auto;
+}
+.details_tab{
+width:500px;
+height:auto;
+float:left;
+padding:0px 10px 10px 10px;
+border-left:1px #999999 solid;
+margin:10px;
+}
+/*----------------------------------------------*/
+
+.right_buttons{
+float:right;
+}
+.right_button{
+width:104px;
+height:26px;
+float:left;
+padding-left:10px;
+background:url(images/button_bg.gif) no-repeat center;
+text-align:center;
+line-height:26px;
+}
+.right_button a{
+font-size:10px;
+color:#D8325D;
+text-decoration:none;
+}
+.right_button a:hover{
+font-size:10px;
+color: #640064;
+text-decoration:none;
+}
+
+#admin_search_tab{
+padding-top:5px;
+margin:0px 10px 10px 0;float:right;
+}
+#admin_search_wrapper
+{
+    width:990px;
+}
+label.search{
+float:left;
+padding-left:10px;
+color:#0066CC;
+}
+
+
+.admin_footer_help{
+width:908px;
+clear:both;
+float:left;
+height: auto;
+margin:10px auto 20px auto;
+background-color:#F2F2F2;
+border:1px #D1D1D1 solid;
+text-align:left;
+color: #666666;
+font-size:11px;
+background:url(images/adminicons/warning.png) no-repeat left;
+background-position:10px 50%;
+padding:10px 10px 10px 50px;
+}
+/*-----fields -----------*/
+body { padding: 0; margin: 0; font-family: Verdana; font-size: 11px; }
+h1  { padding: 10px; margin: 0; color: #c0c0c0; }
+a, a:visited { color: blue }
+.upload { width:300px; COLOR: #0000c0; }
+.error { color: red; }
+.success { color: green; }
+/*--------------ff--------------*/
+/*-------------------Paging------------------------*/
+.PagesFlickr {font-family:Arial, Helvetica, sans-serif; margin-bottom: 20px; margin-top: 20px;float:left;width:640px; }
+.Paginator { font-size: 12px; padding-top: 10px; margin-left: auto; margin-right: auto;  padding-bottom: 10px;  background-image: url(http://l.yimg.com/g/images/dotted.gif); background-repeat: repeat-x; background-position: left bottom;  }
+.Paginator a, .pageList .this-page { padding: 2px 6px; border: solid 1px #ddd; background: #fff; text-decoration: none;margin-left:3px; }
+.Paginator a:visited { padding: 2px 6px; border: solid 1px #ddd; background: #fff; text-decoration: none; }
+.Paginator .AtStart { margin-right: 20px; padding: 2px 6px; /* border: solid 1px #ddd; */ background: #fff; color: #aaa; }
+.Paginator .Prev { margin-right: 10px; padding: 2px 6px; border: solid 2px #ddd; background: #fff; }
+.Paginator .break { padding: 2px 6px; border: none; background: #fff; text-decoration: none; }
+.Paginator .Next { margin-left: 10px; padding: 2px 6px; border: solid 2px #ddd; background: #fff;}
+.Paginator .AtEnd { margin-left: 20px; padding: 2px 6px; /* border: solid 1px #ddd; */ background: #fff; color: #aaa; }
+.Paginator .this-page {padding: 2px 6px; border-color: #999; font-weight: bold; font-size: 13px; vertical-align: top; background: #fff; color: #FF0084; }
+.Paginator a:hover {color: #fff; background: #0063DC; border-color: #036; text-decoration: none;}
+/* 
+.Paginator .ranking {display: block; margin-top: 0.5em; font-weight: bold;}
+.Paginator .ranking a {padding: 0; border: 0; background: transparent;} 
+*/
+.Pages div.Results { text-align: center; font: 11px/15px Arial, Helvetica; color: #aaa; margin-top: 8px; }
+/*-----------------*/
+
+
+select.form_multiselect{
+border: 1px solid #C8D2D9;
+background-color:#FFFFFF;
+margin:0px;
+width:120px;
+
+margin-left:10px;
+height:80px;
+}
+
+label.adminleft{
+
+width:95px;
+padding-top:3px;
+text-align:right;
+}
+textarea{
+border: 1px solid #C8D2D9;
+background-color:#FFFFFF;
+margin:0px;
+width:250px;
+height:80px;
+
+margin-left:2px;
+}
+/*-------Yönetim paneli Category*/
+#categoryList
+{
+	position:relative;
+	margin:10px 0 0 0;
+	list-style-position:inside;
+}
+#categoryList ul
+{
+	list-style:inside;
+}
+#categoryList li
+{
+	padding-left:10px;	
+	
+}
+/*--------*/
+/*----menu--*/
+#menu li
+{
+    line-height:15px;
+}
+/*---*/
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error
+{
+    color: #ff0000;
+}
+
+.field-validation-valid
+{
+    display: none;
+}
+
+.input-validation-error
+{
+    border: 1px solid #ff0000;
+    background-color: #ffeeee;
+}
+
+.validation-summary-errors
+{
+    font-weight: bold;
+    color: #ff0000;
+}
+
+.validation-summary-valid
+{
+    display: none;
+}
+
+/* Styles for editor and display helpers
+----------------------------------------------------------*/
+.display-label,
+.editor-label,
+.display-field,
+.editor-field
+{
+    margin: 0.5em 0;
+}
+
+.text-box
+{
+    width: 30em;
+}
+
+.text-box.multi-line
+{
+    height: 6.5em;
+}
+
+.tri-state
+{
+    width: 6em;
+}
+/*-------------------[PAGE NAVI]------------------*/
+/*------------------------------------------------*/
+.pagination { overflow: hidden; padding: 15px 12px 0px; }
+
+.wp-pagenavi { position: relative; text-align:center; font-family: 'Yanone Kaffeesatz', Arial, sans-serif; font-size: 14px; color: #535253; padding-right:40px; margin-top:35px; text-shadow:1px 1px 1px #FFFFFF; }
+.wp-pagenavi a, .wp-pagenavi a:link { padding: 5px 7px !important; margin: 2px; text-decoration: none; border: none !important; color: #c7c7c7; background:  none !important; font-weight: normal !important; font-size: 30px; text-shadow:1px 1px 1px #FFFFFF; }
+.wp-pagenavi a:visited { padding: 5px 7px; margin: 2px; text-decoration: none; border: none !important; color: #c7c7c7; background:  none !important; }
+.wp-pagenavi span.pages { padding: 5px 7px 5px !important; margin: 2px !important; border: none !important; color: #535253 !important; background: none !important; margin-right: 6px !important; text-shadow:1px 1px 1px #FFFFFF; }
+.wp-pagenavi span.current, .wp-pagenavi span.extend, .wp-pagenavi a:active, .wp-pagenavi a:hover { padding: 5px 7px !important; margin: 2px; background: none !important; border: none !important; color:#383738 !important; font-size: 30px; font-weight: normal !important; text-shadow:1px 1px 1px #FFFFFF; }
+a.readmore:hover, #sidebar div.custom-sidebar-block ul.control li a:hover, ul#cats-menu li a:hover, ul#page-menu li a:hover, div#slider-control div.featitem h2 a  { text-decoration: none; }
+
+.js #feat-content, .js div#from-blog div.entries {display: none;} 
+
+.foursixeight { margin: 0px 0px 15px 84px;}
+.et_pt_gallery_entry { margin: 0 0 32px 69px !important; }

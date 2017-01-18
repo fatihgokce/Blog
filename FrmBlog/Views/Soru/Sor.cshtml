@@ -1,0 +1,220 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Helpers;
+@using Microsoft.Web.Mvc;
+@using FrmBlog.Controllers;
+@using FrmBlog.Models;
+@using System.Security.Principal;
+@using FrmBlog.Repositorys;
+@{
+    ViewBag.Title = "Sor";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sor</title>
+ <meta charset="utf-8" />
+   <meta name="keywords" content=@Html.MetaKeyboard()  /> 
+    <meta name="description" content=@Html.MetaDescription() /> 
+ @*   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1254"> *@
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-9"> 
+
+ <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:light,regular,bold&amp;subset=latin' rel='stylesheet' type='text/css' />
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
+@*@section HeadSide{*@
+  @*  These 2 CSS files are required: any 1 jQuery UI theme CSS, plus the Tag-it base CSS.  
+      These 2 CSS files are required: any 1 jQuery UI theme CSS, plus the Tag-it base CSS.  *@
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css" />
+    
+    <link href="../../Content/jquery.tagit.css" rel="stylesheet" type="text/css" />
+ @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript" charset="utf-8"></script> *@
+   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>  
+    <script src="../../Scripts/tag-it.js" type="text/javascript"></script>
+
+
+
+  <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>   
+@*}*@	
+
+</head>
+<body id="home">
+ 	@Html.Partial("Header")
+<div id="content" > 	   
+<div class="container clearfix"> 
+<div id="main-area"> 
+<div id="main-recent">
+@using (Html.BeginForm(@ViewContext.RouteData.Values["action"].ToString(),@ViewContext.RouteData.Values["controller"].ToString(),FormMethod.Post,new{onsubmit = "return checkForm();"}) )    
+{   
+    @Html.ValidationSummary(true, "L�tfen hatalar� d�zeltip tekrar deneyiniz.")
+    
+<div><label for="title">Ba�l�k</label>
+</div>
+     <a id="st"></a>
+<div>
+@*<input type="text" name="title" size="105" tabindex="1" />*@
+@Html.TextBoxFor(x => x.Question.Title, new { style = "width:662px;height:21px", tabindex = "1" })
+</div>
+     <div>
+      @Html.ValidationMessage("title")
+    </div>
+ <div>
+
+   @*  <textarea cols="80" rows="15" name="description" tabindex="2" class="wmd-input" >   
+     </textarea> *@   
+       @Html.TextAreaFor(x => x.Question.Detail, new { cols = "80", rows = "15", tabindex = "2", @class = "wmd-input" })
+     </div>
+    <div>
+      @Html.ValidationMessage("description")
+    </div>
+    <div><label for="title">Etiketler</label>
+    <input name="tags" id="mySingleField" value="" type="hidden"  />
+</div><div>@*<input type="text" name="title" size="105" />*@
+
+<ul id="Tags" onkeyup="Scroll(event)"></ul> 
+</div>
+      <div>
+      @Html.ValidationMessage("tags")
+    </div>
+    if (!Request.IsAuthenticated)
+    {
+<div class="form-item">
+<table>
+<tbody>
+<tr>
+<td class="vm open-id-login">
+@Html.ActionLink("Giri�", "LogOn", "Account", new { ReturnUrl = Request.Url.AbsolutePath }, new { style = "font-size: 200%; margin-left: 30px;" })
+</td>
+<td class="orcell">
+<div class="orword">veya</div>
+<div class="orline"></div>
+</td>
+<td class="vm">
+<div>
+<label for="display-name">Kullan�c� ismi</label>
+@Html.TextBoxFor(x => x.RegisterModel.UserName, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.UserName)
+ </div>
+<div>
+<label for="m-address">Email</label>
+@Html.TextBoxFor(x => x.RegisterModel.Email, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.Email)
+</div>
+<div>
+<label for="password">�ifre</label>
+@Html.TextBoxFor(x => x.RegisterModel.Password, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.Password)
+
+</div>
+@*<div>
+
+<label for="display-name">�artlar� kabul ediyorum</label>@Html.CheckBox("sart", true)<label for="display-name">�artlar� akumak i�in<a href="/Home/KullanimSartlari">t�klay�n</a></label>
+@Html.ValidationMessage("sart")
+
+</div>*@
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+    }
+
+    <div class="form-submit cbt">
+<input id="submit-button" type="submit" value="Sorunu G�nder"  tabindex="110" style="cursor:pointer"/>
+</div>
+}
+</div> <!-- end #main-recent --> 
+<div id="sidebar"> 
+	<div id="sidebar-bottom"> 
+		<div id="sidebar-content"> 			
+
+ <div id="archives-3" class="widget widget_archive">
+<h4 class="widgettitle">Etiketler</h4>
+@Html.Partial("_SideBarTagList")
+</div>
+
+
+</div> <!-- end #sidebar-content --> 
+	</div> <!-- end #sidebar-bottom --> 
+</div> <!-- end #sidebar -->	
+<div class="cbt"></div>
+
+</div> <!-- end #main-area --> 
+ </div> <!-- end .container --> 				
+</div> <!-- end #content -->	
+ 
+ 
+
+ @Html.Partial("Footer")		
+ @Html.Partial("Editor")	
+
+ <script type="text/javascript">
+ function Scroll(evt)
+ {
+$('html,body').animate({scrollTop: $("#st").offset().top},'slow');
+//  window.location.hash="st";  
+ }
+ function goToByScroll(id){
+     	$('html,body').animate({scrollTop: $("#"+id).offset().top},'slow');
+}
+     function init() {
+         var action = '@ViewContext.RouteData.Values["action"]';
+         var data = '@Html.Raw(ViewData["tagsStr"] as string)';
+         
+         if (action == "Edit") {
+             $("#mySingleField").val(data);           
+             
+             $("#submit-button").val("Kaydet");
+         }else{
+             $("#mySingleField").val(data);       
+         }
+     }
+     init();
+      $(document).ready(function () {
+  
+        $('#Tags').tagit({
+            //            availableTags: tags,
+            tagSource:  function (request, response) {
+                        $.ajax({
+                            url: "@Url.Action("FindNames","Home") ", type: "POST", dataType: "json",
+                            content:"text/html; charset=utf-8",
+                            data: { name: request.term },
+                            success: function (data) {                             
+                                response($.map(data, function (item) {
+                                    return { label: item, value: item, id: item }
+                               }))
+                            }
+                        })
+                    },
+            removeConfirmation: true,
+            singleField: true,
+            singleFieldNode: $('#mySingleField')
+            //            tagSource:function(request, response){ $.post(url, { name:extractLast(request.term)  }, function (data) {alert( data) });}
+            //            allowSpaces: true
+        });
+        $("#submit-button").click(function () {
+
+        });
+
+    });
+ </script>
+ <script type="text/javascript">
+   
+    function checkForm() {
+        var ary = $("#mySingleField").val();
+     
+        if (ary == undefined || ary == "") {
+            alert("L�tfen En az bir tane etiket se�iniz");
+            return false;
+        }
+        var ary2 = ary.split(',');       
+        if (ary2.length < 1 || ary2.length > 5) {
+            alert("Etiket say�s� En az 1 En fazla 5 tane olmal�d�r.");
+            return false;
+        }               
+        return true;
+    }
+	</script> 
+</body>
+</html>

@@ -1,0 +1,58 @@
+﻿<div id="footer"> 
+		<div id="footer-content"> 	
+				
+			<div id="footer-bottom">	
+				<div class="container clearfix"> 
+					<ul id="footer-menu" class="bottom-nav">
+                    <li id="menu-item-57" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-57">
+     <a href="/">AnaSayfa</a></li> 
+<li id="menu-item-50" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-50">
+<a href="/">Hakkımızda</a></li> 
+<li id="menu-item-89" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-89">
+<a href="/">iletişim</a></li> 
+<li id="menu-item-56" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-56">
+<a href="/Home/KullanimSartlari">Kullanım şartları</a></li> 
+</ul>											
+					<p id="copyright"> Powered by  <a href="http://www.indeksyazilim.com">indeks yazılım</a></p> 
+				</div> <!-- end .container -->	
+			</div> <!-- end #footer-bottom --> 
+		</div> <!-- end #footer-content --> 
+	</div> <!-- end #footer --> 
+ <script type="text/javascript">
+     function initNav() {
+         var action = '@ViewContext.RouteData.Values["action"]';
+         var controller = '@ViewContext.RouteData.Values["controller"]';
+        
+         if (action == "Index" && controller == "Home") {
+             //             $(".selected_li").attr("class", "");
+             $("#nav_li_soru").attr("class", "selected_li");             
+         }
+         else if (controller == "Etiket") {       
+         removeClass();                       
+             $("#nav_li_etiket").attr("class", "selected_li");
+         } else {
+         removeClass();
+//             $(".selected_li").attr("class", "");
+         }
+     }
+     initNav();
+     function removeClass() {
+         $(".tnav > ul > li").each(function (i) {           
+             $(this).removeClass("selected_li");
+         });
+     }
+ </script>
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-11329003-4']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+   

@@ -1,0 +1,40 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers;  
+@using FrmBlog.Avatar;
+@{
+    ViewBag.Title = "ListeKullanici";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ListeKullanici</h2>
+
+ <table id="hor-minimalist-a">
+    <thead>
+    <tr>
+    <th>
+    Id
+    </th><th>Email</th>
+    <th>Name</th>
+    <th>Şifre</th>
+     <th>Resim</th>
+    </tr>
+    </thead>
+    @foreach(var item in Model.Users) {
+    <tr>
+    <td>@item.UserId</td>
+     <td>@item.Email</td>
+      <td>@item.Name</td>  
+   <td>@item.Password</td>  
+   <td><img src="@item.PicturePath.GetAvatarBySize(32,24)" /></td>
+    </tr>
+    }
+    </table>
+    <div class="clear"></div>
+@if (Model.Paging.TotalCount > 0)
+{ 
+     @Html.Pager(Model.Paging, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<HomeController>(c => c.ListeKullanici(page))))
+} 

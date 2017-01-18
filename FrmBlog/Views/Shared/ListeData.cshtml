@@ -1,0 +1,70 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers;     
+@{
+    RepositoryAnswers _repoAns = new RepositoryAnswers("", DbType.SqLite);
+    RepositoryQuestionVisit _repoIst = new RepositoryQuestionVisit("", DbType.SqLite);
+    RepositoryTag _repoTag = new RepositoryTag("", DbType.SqLite);   
+}
+<div class="clear"></div>	
+<div id="question-mini-list">
+@{
+    if(Model.Questions.Count==0)
+    {
+        <p>Soru eklenmemiş.</p>
+    }
+}
+@foreach (var q in Model.Questions)
+{
+ <div class="question-summary first-border" id="@q.QuestionId">
+ @{
+    string status = "unanswered";
+    string title = "";
+    int countAns = @_repoAns.AnswerCountOfQuestion(@q.QuestionId);
+    bool bestRep = @_repoAns.HaveBestReply(@q.QuestionId);
+    if (bestRep)
+    {
+        status = "answered-accepted";
+        title = "cevaplardan biri doğru cevap olarak işaretlemiş.";
+    }
+    else if (countAns > 0)
+    {
+        status = "answered";
+    }
+}
+<div onclick="window.location.href='@Url.Action("Detay", "Soru", new { id = @q.QuestionId, title = @Html.Raw(q.Title.ConvertWebUrl()) })'" class="cp">
+<div class="status @status" title="@title">
+<div class="mini-counts">@countAns</div>
+<div>Cevap</div>
+</div>
+<div class="views">
+<div class="mini-counts">@_repoIst.VisitCount(@q.QuestionId)</div>
+<div>Ziyaret</div>
+</div>
+</div>
+<div class="summary">
+<h3>
+@(Html.ActionLink<SoruController>(x => x.Detay(@q.QuestionId, @q.Title.ConvertWebUrl()), @q.Title.Replace("%t%", "'").Replace("@@", "@"), new { @class = "question-hyperlink", title = @Html.Raw(q.Title.Replace("%t%", "'").Replace("@@", "@")) }))
+</h3>
+<div class="tags2">
+@{
+    var tags = _repoTag.GetListByQuestionId(@q.QuestionId);
+    foreach (var t in tags)
+    {
+   @(Html.ActionLink<EtiketController>(x => x.Tag(@t.TagName,null), @t.TagName, new { @class = "post-tag", rel = "tag" }))  
+    }
+}
+</div>
+<div class="started">
+<span title="" class="relativetime">@q.Date.ToLongDateString()</span>
+<p>@q.User.Name</p>
+</div>
+</div>
+</div>    
+}
+</div><!-- question-mini-list -->
+
+
+

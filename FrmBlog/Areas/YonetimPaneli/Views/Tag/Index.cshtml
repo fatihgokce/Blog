@@ -1,0 +1,139 @@
+﻿@model FrmBlog.Models.Tag
+@using FrmBlog.Repositorys; 
+@using FrmBlog.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/YonetimPaneli/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<div id="haberForm" style="display:none;border:1px dotted #ccc;width:300px;">
+  <script src="/Scripts/MicrosoftAjax.js" type="text/javascript"></script>
+  <script src="/Scripts/MicrosoftMvcValidation.js" type="text/javascript"></script>
+
+ @using (Html.BeginForm())
+     { 
+  <fieldset>
+  <ol>
+  <li>
+  @Html.HiddenFor(x=>x.TagId)
+  </li>
+  <li>
+    <label>Etiket Adı *: </label>
+    @Html.TextBoxFor(x=>x.TagName)
+    @Html.ValidationMessageFor(x=>x.TagName)
+    </li>
+
+    <li>
+    <ul>
+    <li style="display:inline">
+    <input type="submit" value="Kaydet" />
+    </li>
+    <li style="display:inline"><input type="button" value="iptal" class="kapatForm" /></li>
+    </ul>
+    </li>
+  </ol>
+
+  </fieldset>     
+   }
+  </div> 
+    <div style="padding:5px;">
+   <a href="javascript:void(0)" class="yeniKayit" style="text-decoration:underline">Yeni Kayit</a> 	
+   </div>
+ 
+		<!-- preload the images --> 
+		<div style='display:none'> 
+			<img src="../../../../Content/images/x.png" alt='' /> 
+		</div> 
+ <div id="main_content">  
+    <div id="admin_header">
+    	<div class="admin_index_title">Etiket</div>        
+        
+    
+    </div>
+    <div id="admin_header_border"></div>   
+ @using (Html.BeginForm())
+ { 	
+ <div class="grid">
+ 
+                <table cellspacing="0" cellpadding="0" id="tbusers">
+                    <tr>                   	
+                        <th style="width:5px;"><a href="#" class="pink">ID</a></th>
+                        <th style="width:20px;"><a href="#" class="pink">Etiket Ad</a></th>                                     
+                        <th style="width:15px;"><a href="javascript:void(0)" class="pink"></a></th>
+                                      
+                    </tr>
+                    @{ 
+                        int i = 1;
+                        RepositoryTag _repTag = new RepositoryTag("",DbType.SqLite);
+                        var _tags = _repTag.GetAll();
+                     }
+                   @foreach (Tag item in _tags) {  
+                    string cssClass = "";
+                    if (i % 2 == 1)
+                    { cssClass = "odd"; }
+                    else
+                    {
+                        cssClass = "even";
+                        i++;
+                    }
+                    
+                    <tr class="@cssClass">
+                      <td>@item.TagId</td>
+                      <td>@item.TagName</td>                       
+                      
+                        <td>     
+                          <a href="javascript:void(0)" class="guncelle">Güncelle</a>
+                         <a href="javascript:void(0)" class="delete">Sil</a>
+                        </td>        
+                            
+                    </tr>			
+                    }           
+                                                                                                                 
+                </table>
+       
+        </div>      
+        }       
+	</div>
+    <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function () {
+        $(".delete").click(function () {
+            var tr = $(this).parents("tr");
+            var id = parseInt($(tr).children("td:eq(0)").text());
+            var result = confirm("Silmek istediğinizden eminmisiniz?");
+            if (result) { 
+             var url= "@Url.Action("Sil",new{id=""})";
+            //alert(url);
+            url=url+"/"+id;
+             submitform(url);
+            }
+        });
+        $(".yeniKayit").click(function () {
+            yeniKayit();
+            $("#haberForm").css("display", "block");
+        });
+        $(".kapatForm").click(function () {
+            yeniKayit();
+            $("#haberForm").css("display", "none");
+        });
+        $(".guncelle").click(function () {
+            $("#haberForm").css("display", "block");
+            var tr = $(this).parents("tr");
+            var id = parseInt($(tr).children("td:eq(0)").text());
+            var bas = $(tr).children("td:eq(1)").text();
+         
+            $("#TagId").val(id);
+            $("#TagName").val(jQuery.trim(bas));            
+        });
+    });
+    
+    function yeniKayit() {      
+        $("#TagId").val("");
+        $("#TagName").val("");         
+    }
+    function submitform(url) {
+        document.forms[1].action = url;
+        document.forms[1].submit();
+    }
+ 
+</script>
+   

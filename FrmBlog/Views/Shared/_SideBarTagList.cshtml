@@ -1,0 +1,26 @@
+﻿@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers;     
+@using FrmBlog.ModelData; 
+<div class="widget-content">
+<ul>
+@{
+ RepositoryTag _repoTag = new RepositoryTag("", DbType.SqLite);
+ string action = ViewContext.RouteData.Values["action"].ToString();
+ int count = 25;
+ if(action=="Sor")
+ {
+     count = 1000;         
+ }
+List<TagInfo>liste=_repoTag.GetAllTagInfo(count);
+foreach (var tag in liste)
+{
+    <li>
+    @(Html.ActionLink<EtiketController>(x => x.Tag(@tag.TagName,null), @tag.TagName, new { @class = "post-tag", rel = "tag" }))   
+    <span class="item-multiplier">x @tag.TagQuestionCount</span> 
+    </li>
+}
+}
+</ul>
+</div>

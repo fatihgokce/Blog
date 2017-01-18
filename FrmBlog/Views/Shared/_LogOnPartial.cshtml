@@ -1,0 +1,22 @@
+﻿@if (Request.IsAuthenticated)
+{
+   <text> 
+    <strong>@(((FrmBlog.Models.User)HttpContext.Current.User).Name)</strong>!
+    [ @Html.ActionLink("Çıkış", "LogOff", "Account") ]
+    </text>
+   
+}
+else
+{    
+    string rurl = @Request["ReturnUrl"];
+    if (string.IsNullOrEmpty(rurl))
+    {
+        rurl = Request.Url.AbsolutePath; 
+    } 
+  
+   <p>
+      [ @Html.ActionLink("Giriş", "LogOn", "Account", new { ReturnUrl=@rurl},null) ]
+    [@Html.ActionLink("Üye Ol", "Register", "Account", new { ReturnUrl = @rurl }, null)]
+    </p>
+  
+}

@@ -1,0 +1,47 @@
+﻿@model List<FrmBlog.ModelData.TagInfo>
+@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers; 
+@using FrmBlog.ModelData;   
+@using FrmBlog.Models;
+@{
+    ViewBag.Title = "ListeEtiket";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+<div class="div_etiket_wrapper">
+<h2>Etiketler</h2>
+</div>
+<div>
+
+@{
+
+ var skip=0;
+ var take=5;
+ int listeCount=Model.Count/take;
+ if(Model.Count<take && Model.Count>0)
+ { listeCount=1;}
+ for (int i = 0; i < listeCount;i++)
+ {
+     var liste5 = Model.Skip(skip).Take(take);
+      skip = (i + 1) * take;
+     <div class="div_etiket_row5">
+     @foreach (var tag in liste5)
+     {        
+    <div class="div_etiket"> 
+    <a href="/Etiket/@tag.TagName" class="post-tag">@tag.TagName</a>
+    <span class="item-multiplier">x @tag.TagQuestionCount</span> 
+    </div>
+   
+     }   
+     </div>
+     
+}
+}
+</div>
+<div class="clear"></div>
+@if (ViewBag.pager.TotalCount > 0)
+{ 
+     @Html.Pager(ViewBag.pager as PaginatedList, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<EtiketController>(c => c.Etiketler(page,queryData))))
+} 

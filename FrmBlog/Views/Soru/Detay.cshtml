@@ -1,0 +1,379 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Helpers;
+@using Microsoft.Web.Mvc;
+@using FrmBlog.Controllers;
+@using FrmBlog.Models;
+@using System.Security.Principal;
+@using FrmBlog.Repositorys;
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+ <title>@ViewBag.Title.Replace("%t%", "'").Replace("@@", "@")</title>
+ <meta charset="utf-8" />
+      <meta name="keywords" content=@Html.MetaKeyboard()  /> 
+    <meta name="description" content=@Html.MetaDescription() /> 
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1254"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-9"> 
+    <link href='http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:light,regular,bold&amp;subset=latin' rel='stylesheet' type='text/css' />
+    <link href="@Url.Content("~/Content/style.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.5.1.min.js")" type="text/javascript"></script>
+   
+    <script src="@Url.Content("~/Scripts/modernizr-1.7.min.js")" type="text/javascript"></script>
+   @* <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>*@
+@*<script src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"
+           type="text/javascript">
+</script>*@
+    <style type="text/css">
+    .eniyiDiv
+    {
+    	background-color:green;
+    }
+    </style>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+     
+</head>
+<body id="home">
+  	@Html.Partial("Header")
+
+	<div id="content"> 	
+<div class="container clearfix"> 
+<div id="main-area"> 
+	<div id="main-tabs"> 
+		<h1>
+        @Model.Question.Title.Replace("%t%", "'").Replace("@@", "@")
+        </h1>
+	</div> <!-- end #main-tabs --> 
+	
+	<div id="main-recent"> 
+	<div class="question-box-wrapper">
+      <div class="question-box-date">@Model.Question.Date.ToLongDateString(),@Model.Question.Date.ToShortTimeString()</div>
+    <div class="question-box-user">
+    <div class="user-picture">
+    <img src="@Model.Question.User.PicturePath.GetAvatarBySize(32, 48)"  alt="res" />
+    </div>
+    <div>
+    <p>@Model.Question.User.Name</p>
+    </div>
+  
+    </div>
+    <div class="question-box-context">
+   @Html.Raw(@Model.Question.Detail.Replace("%t%", "'").Replace("@@", "@"))  
+    </div>
+    <div class="question-tag-wrapper">   
+     <ul id="question-tag">
+    @foreach (var t in @Model.Tags)
+    {
+       <li>
+     @(Html.ActionLink<EtiketController>(x => x.Tag(@t.TagName, null), @t.TagName, new { @class = "post-tag", rel = "tag" }))  
+       </li>
+    }
+   
+    </ul>
+    <div style="float:right;margin-right:10px;"><!-- AddThis Button BEGIN -->
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style ">
+<a href="http://www.addthis.com/bookmark.php?v=250&amp;pubid=ra-4e84bd9f0ae55233" class="addthis_button_compact">Share</a>
+<span class="addthis_separator">|</span>
+<a class="addthis_button_preferred_1"></a>
+<a class="addthis_button_preferred_2"></a>
+<a class="addthis_button_preferred_3"></a>
+<a class="addthis_button_preferred_4"></a>
+</div>
+<script type="text/javascript">    var addthis_config = { "data_track_addressbar": false };</script>
+<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=ra-4e84bd9f0ae55233"></script>
+<!-- AddThis Button END --> </div>
+</div>
+  <div class="question-detail-link cbt">
+@if (@HttpContext.Current.User.Identity.Name == @Model.Question.User.Identity.Name || @HttpContext.Current.User.IsInRole(Role.Administrator.Name))
+{
+ @(Html.ActionLink<SoruController>(x => x.Edit(@Model.Question.QuestionId), "d�zelt", new { @class = "edit this post", rel = "tag" }))      
+<span class="lsep">|</span>
+ <a href="#" title="sil">sil</a>   
+}
+@if (@HttpContext.Current.User.IsInRole(Role.Administrator.Name))
+{
+ <span class="lsep">|</span>
+ <a href="#" title="yayindan kald�r" onclick="YayindanKaldir(@Model.Question.QuestionId)">yay�ndan kald�r</a>  
+} 
+</div>
+    </div> <!-- end question-box-wrapper --> 
+    <div class="question-detail-separator">&nbsp;</div>
+    @{
+        var bestReply = Model.Answers.Where(x => x.BestReply).SingleOrDefault();
+        if (bestReply != null)
+        {
+            Model.Answers.Remove(bestReply);
+            Model.Answers.Insert(0, bestReply);
+        }
+       int count=0;
+           
+    }
+
+@foreach (var ans in @Model.Answers)
+{
+     count++; 
+     if(Model.Answers.Count==count)
+    {
+        <a name="maintain_scroll" id="st"></a>
+    }
+   
+<div class="question-box-wrapper" id="@ans.AnswerId">
+ <div class="question-box-date">@ans.Date.ToLongDateString(),@ans.Date.ToShortTimeString()</div>
+    <div class="question-box-user">
+    <div class="user-picture">
+    <img src="@ans.User.PicturePath.GetAvatarBySize(32, 48)"  alt="gravatar" />
+</div>
+    <div>
+    <p>@ans.User.Name</p>
+    </div>
+  
+    <div class="best-reply" id="@ans.AnswerId">
+    @if (ans.BestReply)
+    {
+    <span class="vote-accepted-on" title="Soruyu soran ki�i taraf�ndan en iyi cevap kabul edildi">accepted</span>
+    }
+    </div>
+    </div>
+    <div class="question-box-context">
+    <p>@Html.Raw(@ans.Reply.Replace("@", "@@").Replace("%t%", "'"))</p>
+    </div>
+    <div class="question-detail-link">
+@if ((HttpContext.Current.User.Identity.Name == @ans.User.Identity.Name) || @HttpContext.Current.User.IsInRole(Role.Administrator.Name))
+{
+ @(Html.ActionLink<SoruController>(x => x.CevapDuzelt(ans.AnswerId), "d�zelt", new { @class = "edit this post" }))    
+<span class="lsep">|</span>
+ <a href="javascript:void()" title="edit this post" onclick="deleteAnswer(@ans.AnswerId)">sil</a>
+    if (@HttpContext.Current.User.IsInRole(Role.Administrator.Name))
+    {
+ <span class="lsep">|</span>
+ <a href="javascript:void()" title="edit this post" onclick="SignBestReply(@ans.AnswerId)">en iyi cevap</a>  
+    }
+}
+ @if (@HttpContext.Current.User.Identity.Name == @Model.Question.User.Identity.Name)
+ {    
+ <a href="javascript:void()" title="edit this post" onclick="SignBestReply(@ans.AnswerId)">en iyi cevap</a>          
+ }
+
+</div>
+    </div> <!-- end question-box-wrapper -->
+     
+     <div class="question-detail-separator">&nbsp;</div>
+  
+}
+ 
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+ 
+@using (@Html.BeginForm())
+{
+   @Html.ValidationSummary(true, "L�tfen hatalar� d�zeltip tekrar deneyiniz.")
+     <div>
+     <textarea cols="80" rows="15" name="description" tabindex="2" class="wmd-input" >    
+     </textarea>    
+     </div>
+    <div>
+      @Html.ValidationMessage("description")
+    </div>
+
+   
+    if (!Request.IsAuthenticated)
+    {
+<div class="form-item">
+<table>
+<tbody>
+<tr>
+<td class="vm open-id-login">
+@Html.ActionLink("Giri�", "LogOn", "Account", new { ReturnUrl = Request.Url.AbsolutePath }, new { style = "font-size: 200%; margin-left: 30px;" })
+</td>
+<td class="orcell">
+<div class="orword">veya</div>
+<div class="orline"></div>
+</td>
+<td class="vm">
+<div>
+<label for="display-name">Kullan�c� ismi</label>
+@Html.TextBoxFor(x => x.RegisterModel.UserName, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.UserName)
+ </div>
+<div>
+<label for="m-address">Email</label>
+@Html.TextBoxFor(x => x.RegisterModel.Email, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.Email)
+</div>
+<div>
+<label for="password">�ifre</label>
+@Html.TextBoxFor(x => x.RegisterModel.Password, new { size = "30", maxlength = "30" })
+@Html.ValidationMessageFor(x => x.RegisterModel.Password)
+
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+  @*   <script language="javascript" type="text/javascript">
+         var flag = false;
+    </script>*@
+       
+    }
+    @* <script language="javascript" type="text/javascript">
+         function gizle() {
+             alert("q");
+             alert(flag);
+             if (flag == "undefined" || flag == false) {
+                 $("#recaptcha_widget_div").css("display", "none");
+                 aelert("a");
+             }
+             $("#recaptcha_widget_div").hide();
+         }
+         gizle();
+    </script>*@
+      <p>
+         @Html.GenerateCaptcha()
+            </p>
+     <div class="form-submit cbt">
+<input id="submit-button" type="submit" value="Cevap G�nder" tabindex="110" style="cursor:pointer"/>
+</div>
+}
+</div> <!-- end #main-recent --> 
+</div> <!-- end #main-area --> 
+@{
+    RepositoryTag _repoTag = new RepositoryTag("", DbType.SqLite);
+    RepositoryQuestionVisit _repoIst = new RepositoryQuestionVisit("", DbType.SqLite);    
+ }	
+<div id="sidebar-detail"> 
+<div class="module">
+<p class="label-key">Etiketler</p>
+<div class="tagged">
+@foreach (var t in @Model.Tags)
+{
+       
+ @(Html.ActionLink<EtiketController>(x => x.Tag(@t.TagName, null), @t.TagName, new { @class = "post-tag", rel = "tag" }))  
+ <span class="item-multiplier">� @_repoTag.GetQuestionCountByTagId(@t.TagId)</span>
+ <br />   
+}    
+</div>
+<div>
+<span>G�r�nt�leme</span>
+<span class="item-multiplier"> @_repoIst.VisitCount(@Model.Question.QuestionId)</span>
+</div>
+</div><!-- end .module -->
+<div class="module">
+<h4 id="h-related">Benzer Sorular</h4>
+@foreach (var s in @Model.Questions)
+{
+<div class="spacer">
+@(Html.ActionLink<SoruController>(x => x.Detay(@s.QuestionId, @s.Title.ConvertWebUrl()), @s.Title.Replace("%t%", "'").Replace("@@", "@"), new { @class = "question-hyperlink" }))
+</div>  
+}
+</div>
+
+</div> <!-- end #sidebar -->	
+	
+			</div> <!-- end .container --> 
+	
+				
+	</div> <!-- end #content -->			
+@Html.Partial("Footer")		
+@Html.Partial("Editor")	
+  <script src="../../Scripts/jquery.slideto.min.js" type="text/javascript"></script>
+
+    <script language="javascript" type="text/javascript">
+  
+    function scrollTo()
+    {
+      var isPost=@ViewBag.isPostBack ;     
+      if(isPost=="1")
+      {   
+  
+      //$("#st").slideto({  highlight: false});   
+      $('html,body').animate({scrollTop: $("#st").offset().top},'slow'); 
+//      window.location.hash="st";  
+      }
+   
+    }
+    scrollTo();
+    </script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript">
+function YayindanKaldir(QuestionId)
+{
+ var result = confirm("Yay�ndan kald�rmak istedi�inize eminmisiniz?");
+ if(result)
+ {
+ var aid = parseInt(QuestionId);
+            var url="@Url.Action("SoruyuYayindanKaldir", "Soru")";
+            url=url+"/"+aid;     
+            $.post(url, { id:aid  }, function (data) {
+                if (data.Success == true) {
+                    document.location.href="/";
+                }
+                else {
+                    alert("Error: " + obj.Message);
+                }
+            });
+}
+}
+function SignBestReply(AnswerId)
+{
+ var aid = parseInt(AnswerId);
+            var url="@Url.Action("SignBestReply", "Soru")";
+            url=url+"/"+aid;     
+            $.post(url, { id:aid  }, function (data) {
+                if (data.Success == true) {
+                    //submitform();
+                    DivSignBest(AnswerId)
+                }
+                else {
+                    alert("Error: " + obj.Message);
+                }
+            });
+}
+function DivSignBest(AnswerId){
+ $(".best-reply").each(function(i){
+ if($(this).attr("id")==AnswerId){
+ //if($(this).find())
+  $(this).find(".vote-accepted-on").remove();
+ $(this).append('<span class="vote-accepted-on" title="Soruyu soran ki�i taraf�ndan en iyi cevap kabul edildi">accepted</span>');
+ $(this).parent().parent().hide().fadeIn(500);
+
+ }
+ else{
+ $(this).find(".vote-accepted-on").remove();
+ // $(this).parent().parent().removeClass("eniyiDiv");
+  $(this).parent().parent().hide().fadeIn(1000);
+ }
+ });
+}
+    function deleteAnswer(AnswerId) {
+       var result = confirm("Silmek istedi�inizden eminmisiniz?");
+        if (result) {
+            var aid = parseInt(AnswerId);
+            var url="@Url.Action("AnswerDelete", "Soru")";
+            url=url+"/"+aid;     
+            $.post(url, { id:aid  }, function (data) {
+                if (data.Success == true) {
+//               document.location.href=document.location.href;
+$("#"+AnswerId).next().remove();
+$("#"+AnswerId).remove();
+
+                    //submitform();
+                }
+                else {
+                    alert("Error: " + obj.Message);
+                }
+            });
+        }
+    }    
+    function submitform() {
+        document.forms[0].submit();
+    }
+</script>
+</body>
+</html>

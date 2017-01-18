@@ -1,0 +1,157 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers;  
+@using FrmBlog.Models;  
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/YonetimPaneli/Views/Shared/_LayoutPage1.cshtml";
+}
+
+
+    <div style="padding:5px;">
+   <a href="javascript:void(0)" class="yeniKayit" style="text-decoration:underline">Yeni Kayit</a> 	
+   </div>
+ 
+		<!-- preload the images --> 
+		<div style='display:none'> 
+			<img src="../../../../Content/images/x.png" alt='' /> 
+		</div> 
+ <div id="main_content">  
+    <div id="admin_header">
+    	<div class="admin_index_title">Etiket</div>        
+        
+    
+    </div>
+    <div id="admin_header_border"></div>   
+ @using (Html.BeginForm())
+ { 	
+ <div class="grid">
+ 
+                <table cellspacing="0" cellpadding="0" id="tbusers">
+                    <tr>                   	
+                        <th style="width:5px;"><a href="#" class="pink">ID</a></th>
+                        <th style="width:5px;"><a href="#" class="pink">UserId</a></th>                                     
+                        <th style="width:50px;"><a href="javascript:void(0)" class="pink">Link</a></th>
+                        <th style="width:25px;"><a href="javascript:void(0)" class="pink">Date</a></th>    
+                        <th style="width:25px;"><a href="javascript:void(0)" class="pink">IP</a></th>    
+                          <th style="width:25px;"><a href="javascript:void(0)" class="pink">Durum</a></th>   
+                           <th style="width:30px;"><a href="javascript:void(0)" class="pink" style="background-color:Orange;display:block" ></a></th>           
+                    </tr>
+                    @{ 
+     int i = 1;                      
+                     }
+                   @foreach (var item in Model.Questions)
+                   {
+                       string cssClass = "";
+                       if (i % 2 == 1)
+                       { cssClass = "odd"; }
+                       else
+                       {
+                           cssClass = "even";
+                           i++;
+                       }
+                    
+                    <tr class="@cssClass">
+                      <td>@item.QuestionId</td>
+                      <td>@item.UserId</td>                       
+                       <td> @(Html.ActionLink<FrmBlog.Controllers.SoruController>(x => x.Detay(@item.QuestionId, @item.Title.ConvertWebUrl()), @item.Title, new { Area=""}))</td>  
+                        <td> @item.Date</td> 
+                         <td> @item.IPAddress</td> 
+                          <td> @item.State</td> 
+                        <td>     
+                          <a href="javascript:void(0)" class="yayinla">Yayınla</a>
+                           <a href="javascript:void(0)" class="yayinKaldir">Yayından Kaldır</a>
+                         <a href="javascript:void(0)" class="delete">Sil</a>
+                        </td>        
+                            
+                    </tr>			
+                   }           
+                                                                                                                 
+                </table>
+       
+        </div>      
+ }       
+	</div>
+  
+        <div class="clear"></div>
+@if (Model.Paging.TotalCount > 0)
+{ 
+     @Html.Pager(Model.Paging, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                                string.Format("{0}", this.Html.BuildUrlFromExpressionFG<FrmBlog.Areas.YonetimPaneli.Controllers.QuestionController>(c => c.Index(page))))
+} 
+    <script language="javascript" type="text/javascript">
+    jQuery(document).ready(function () {
+        $(".delete").click(function () {
+            var tr = $(this).parents("tr");
+            var id = parseInt($(tr).children("td:eq(0)").text());
+            var result = confirm("Silmek istediğinizden eminmisiniz?");
+            if (result) { 
+             var url= "@Url.Action("SoruSil",new{id=""})";
+            //alert(url);
+            url=url+"/"+id;
+             submitform(url);
+            }
+        });
+        $(".yeniKayit").click(function () {
+            yeniKayit();
+            $("#haberForm").css("display", "block");
+        });
+        $(".kapatForm").click(function () {
+            yeniKayit();
+            $("#haberForm").css("display", "none");
+        });
+           $(".yayinla").click(function () {  
+              
+            var tr = $(this).parents("tr");
+            var aid = parseInt($(tr).children("td:eq(0)").text());
+          
+            var url="@Url.Action("SoruyuYayinla", "Question")";
+            url=url+"/"+aid;   
+          
+            $.post(url, { id:aid  }, function (data) {
+                if (data.Success == true) {
+                     document.forms[0].submit();
+                }
+                else {
+                    alert("Error: " + obj.Message);
+                }
+            });          
+        });
+        $(".yayinKaldir").click(function () {          
+            var tr = $(this).parents("tr");
+            var id = parseInt($(tr).children("td:eq(0)").text());
+           YayindanKaldir(id);           
+        });
+    });
+ function YayindanKaldir(QuestionId)
+{
+ var result = confirm("Yayından kaldırmak istediğinize eminmisiniz?");
+ if(result)
+ {
+ var aid = parseInt(QuestionId);
+            var url="@Url.Action("SoruyuYayindanKaldir", "Soru", new { Area = "" })";
+            url=url+"/"+aid;     
+            $.post(url, { id:aid  }, function (data) {
+                if (data.Success == true) {
+                     document.forms[0].submit();
+                }
+                else {
+                    alert("Error: " + obj.Message);
+                }
+            });
+}
+}
+    function yeniKayit() {      
+        $("#TagId").val("");
+        $("#TagName").val("");         
+    }
+    function submitform(url) {
+        document.forms[0].action = url;
+        document.forms[0].submit();
+
+    }
+ 
+</script>
+   

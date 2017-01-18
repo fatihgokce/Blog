@@ -1,0 +1,65 @@
+﻿@model FrmBlog.ViewData.FrmViewData
+@using FrmBlog.Repositorys;   
+@using Microsoft.Web.Mvc; 
+@using FrmBlog.Controllers;  
+@using FrmBlog.Helpers;  
+@using FrmBlog.Models;  
+@{
+    ViewBag.Title = "ListeZiyaret";
+}
+@{
+    RepositoryQuestionVisit _repoIst = new RepositoryQuestionVisit("",DbType.SqLite);
+    RepositoryQuestion _repoQues = new RepositoryQuestion("", DbType.SqLite);
+ }
+ <div>
+ 
+ @using (@Html.BeginForm("DeleteVisitIstatik", "Home"))
+ { 
+ <input name="ip" type="text" />
+ <input type="submit" value="Sil" />
+ }
+ </div>
+<h2>ListeZiyaret</h2>
+<p>Bugünün Tekil Ziyatçi Sayısı:@_repoIst.ToplamTekilZiyaretciSayisi(DateTime.Today)</p>
+<p>Bugünün Toplam Ziyatçi Sayısı:@_repoIst.ToplamZiyaretciSayisi(DateTime.Today)</p>
+ <table id="hor-minimalist-a">
+    <thead>
+    <tr>
+    <th>
+    Id
+    </th><th>QuestionId</th>
+    <th>QuestionLink</th>
+    <th>UserId</th>
+    <th>ip</th>
+    <th>Tarih</th>  
+     <th>Referans</th>  
+    </tr>
+    </thead>
+
+    @foreach(var item in Model.QuestionVisits) {
+ 
+    Question ques=_repoQues.GetById(item.QuestionId);
+    <tr>
+    <td>@item.ID</td>
+     <td>@item.QuestionId</td>
+    
+     <td>
+     @if(@ques!=null){
+     @(Html.ActionLink<SoruController>(x=>x.Detay(@ques.QuestionId,@ques.Title.ConvertWebUrl()),@ques.Title))
+     }else{
+         <text>AnaSayfa</text>
+     }
+     </td>
+      <td>@item.UserId</td>
+    <td>@item.IPAddress</td>
+    <td>@item.Date</td>
+   <td>@item.Referans</td>
+    </tr>
+    }
+    </table>
+    <div class="clear"></div>
+@if (Model.Paging.TotalCount > 0)
+{ 
+     @Html.Pager(Model.Paging, ViewData["queryData"] as string, (int? page, HtmlHelper htmlHelper, string queryData) =>
+                            string.Format("{0}", this.Html.BuildUrlFromExpressionFG<HomeController>(c => c.ListeZiyaret(page))))
+} 

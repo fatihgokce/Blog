@@ -1,0 +1,65 @@
+@using FrmBlog.Helpers;
+@using Microsoft.Web.Mvc;
+@using FrmBlog.Controllers;
+@using FrmBlog.Models;
+@using System.Security.Principal;
+@using FrmBlog.Repositorys;
+<!DOCTYPE html>
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=windows-1254"> 
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=ISO-8859-9"> 
+    <title>@ViewBag.Title</title>
+       <link href="/Content/admin.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+         <link href="/Content/ui-lightness/jquery-ui-1.8.10.custom.css" rel="stylesheet" type="text/css" />
+    <script src="../../../../Scripts/jquery-ui-1.8.11.min.js" type="text/javascript"></script>
+ <script type="text/javascript">
+     $(document).ready(function () {
+         var controller = '@ViewContext.RouteData.Values["controller"]';
+         var action = '@ViewContext.RouteData.Values["action"]';
+         //alert(controller+"-"+action);
+         var contAct = controller + "/" + action;
+         $(".tabs").find("a").each(function () {
+             var controllerMatch = $(this).attr("name");
+
+             if (controllerMatch == contAct) {
+                 $(this).parent("li").attr("class", "current");
+             }
+         });
+     });
+    </script>
+</head>
+<body>
+   <div id="container">	
+	<div id="header">
+		<span style="float:left"><h1>Site Administration</h1></span>
+        <span style="float:right;padding:5px;">
+        <a href="/">AnaSayfa</a>
+        </span>            
+	</div>      
+<div class="tabs"> 
+<ul>
+
+<li><a href="/YonetimPaneli/Tag" name="Tag/Index"><span>Etiket</span></a></li>
+<li><a href="/YonetimPaneli/Question" name="Question/Index"><span>Sorular</span></a></li>
+<li><a href="/YonetimPaneli/Product.aspx" name="Product/Index"><span>Ürün</span></a></li>
+<li><a href="/YonetimPaneli/Marka.aspx" name="Marka/Index"><span>Marka</span></a></li>   
+<li><a href="/YonetimPaneli/Setting.aspx" name="Setting/Index"><span>Ayarlar</span></a></li>   
+<li><a href="/YonetimPaneli/Iletisim.aspx" name="Iletisim/Index"><span>Iletişim</span></a></li> 
+<li><a href="/YonetimPaneli/Haber.aspx" name="Haber/Index"><span>Haberler</span></a></li>  
+<li><a href="/YonetimPaneli/User.aspx" name="User/Index"><span>Kullanıcı</span></a></li>  
+</ul>
+    </div>
+    <div id="main">
+	 	 <span class="success">@(ViewData["Success"] == null ? "" : @Html.Encode(ViewData["Success"]))</span>
+		 <span class="error">@(ViewData["Error"] == null ? "" : @Html.Encode(ViewData["Error"]))</span>
+	    @RenderBody()
+    </div>
+   @* <div id="footer"><%=Html.SiteName() %></div>*@
+</div>
+    <div>       
+    </div>
+    
+</body>
+</html>

@@ -1,0 +1,41 @@
+﻿@model dynamic      
+@using DotNetOpenAuth.Mvc;
+@using DotNetOpenAuth.OpenId.RelyingParty;
+@using Microsoft.Web.Mvc;
+<div id="login-oauth">
+    <fieldset>
+        <legend style="width:350px">Aşağıdaki sitelerin birinden hesap sahibi misiniz? Logoya tıklayıp kayıt olup bağlanın:</legend>
+        @using (Html.BeginForm("LogOnPostAssertion", "Auth"))
+        {
+            @Html.Hidden("ReturnUrl", Request.QueryString["ReturnUrl"], new { id = "ReturnUrl" })
+            @Html.Hidden("openid_openidAuthData") 
+            <div>
+                @MvcHtmlString.Create(Html.OpenIdSelector(new SelectorButton[] {
+new SelectorProviderButton("https://me.yahoo.com/", Url.Content("~/Content/images/yahoo.gif")),
+new SelectorProviderButton("https://www.google.com/accounts/o8/id", Url.Content("~/Content/images/google.gif")),
+new SelectorOpenIdButton(Url.Content("~/Content/images/openid.gif")),
+}))
+              @*  <div class="helpDoc">
+                    <p>
+                        If you have logged in previously, click the same button you did last time!!
+                    </p>
+                </div>*@
+            </div>
+        }
+    </fieldset>
+    <div class="cbt">
+<p>
+Eğer yukarıdaki sitelerden hesap sahibi değilseniz
+</p>
+<p>
+ @Html.ActionLink("Kayıt olmak için tıklayın", "Register", "Account", new {ReturnUrl=@Request["ReturnUrl"] },null)
+</p>
+ <h6>üye olarak kullanım şartlarını kabul etmiş olursunuz okumak için <a href="/Home/KullanimSartlari">tıklayın</a></h6>
+</div>
+</div>
+@{     
+    var options = new OpenIdSelector();
+    options.TextBox.LogOnText = "Log On";
+}
+@MvcHtmlString.Create(Html.OpenIdSelectorScripts(options,null))
+
